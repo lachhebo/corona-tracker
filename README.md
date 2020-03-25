@@ -1,2 +1,2 @@
-# triviaoftheday
-a gnome shell extension that notify you every day with a new trivia
+# corona-tracker
+a gnome shell extension that notify you every day with informations about the corona virus spread

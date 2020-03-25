@@ -1,1 +1,7 @@
-{"name": "triviaoftoday", "description": "Get a new trivia everyday comming from several sources", "uuid": "triviaoftoday@ismaellachheb.protonmail.com", "shell-version": ["3.32.1"]}
+{
+  "name": "corona-tracker",
+  "description": "Get updates on how teh virus is spreading worldwide",
+  "version": 1,
+  "uuid": "corona-tracker@lachhebo.github.io",
+  "shell-version": ["3.34", "3.36"]
+}
