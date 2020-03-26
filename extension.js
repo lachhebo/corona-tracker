@@ -1,53 +1,242 @@
-
+// Imports
 const St = imports.gi.St;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-let text, button;
 
-function _hideHello() {
-    Main.uiGroup.remove_actor(text);
-    text = null;
-}
+const Lang = imports.lang;
+const PanelMenu = imports.ui.panelMenu;
+const PopupMenu = imports.ui.popupMenu;
+const Util = imports.misc.util;
+const Mainloop = imports.mainloop;
+const Clutter = imports.gi.Clutter;
+const Soup = imports.gi.Soup;
 
-function _showHello() {
-    if (!text) {
-        text = new St.Label({ style_class: 'helloworld-label', text: "Hello, world!" });
-        Main.uiGroup.add_actor(text);
-    }
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const Prefs = Me.imports.prefs;
 
-    text.opacity = 255;
+// Global variables
 
-    let monitor = Main.layoutManager.primaryMonitor;
+let metadata = Me.metadata;
+let _SESSION = null;
+let COUNTRY_NAME = 'france'
 
-    text.set_position(monitor.x + Math.floor(monitor.width / 2 - text.width / 2),
-                      monitor.y + Math.floor(monitor.height / 2 - text.height / 2));
+const USER_AGENT = 'GNOME Shell - Covid-19 Indicator-GS - extension';
+const HTTP_TIMEOUT = 10;
+const LOOP_UPDATE_TIME = 60*60*12; // every 12 hour, the result will be updated 
 
-    Tweener.addTween(text,
-                     { opacity: 0,
-                       time: 2,
-                       transition: 'easeOutQuad',
-                       onComplete: _hideHello });
-}
+// Functions
+
+
+const CoronaItem = new Lang.Class({
+    Name: 'CoronaItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
+
+    _init: function(type, label, value) {
+        this.parent();
+        this.connect('activate', function () {
+        });
+        this._label = label;
+        this._value = value;
+
+        
+        this.actor.add(new St.Label({text: label}));
+        this.actor.add(new St.Label({text: value}), {align: St.Align.END});
+        this.actor.add(new St.Icon({ icon_name: type, icon_size : 12}));
+       
+    },
+
+    getPanelString: function() {
+        return this._value;
+    },
+
+    setMainSensor: function() {
+        //this.setOrnament(PopupMenu.Ornament.DOT);
+    },
+
+    getLabel: function() {
+        return this._label;
+    },
+});
+
+
+
+
+const CoronaMenuButton = new Lang.Class({
+    Name: 'CoronaMenuButton',
+    Extends: PanelMenu.Button,
+
+    _init: function(){
+        this.parent(null, 'coronaMenu');
+        this._loadSettings();
+
+        this._coronaOutput= '';
+
+        this.statusLabel = new St.Label({ text: '\u2026', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
+        this.statusLabel.set_text('Covid-19');
+        this.menu.removeAll();
+        this.actor.add_actor(this.statusLabel);
+
+        // don't postprone the first call by update-time.
+        this._queryAPI();
+
+        this._eventLoop = Mainloop.timeout_add_seconds(LOOP_UPDATE_TIME, Lang.bind(this, function (){
+            this._queryAPI();
+            // readd to update queue
+            return true;
+        }));
+
+    },
+
+    _onDestroy: function(){
+        Mainloop.source_remove(this._eventLoop);
+        this.menu.removeAll();
+        this._settings.disconnect(this._settingsChangedId);
+        this._settingsChangedId = null;
+    },
+
+    _loadSettings: function () {
+        this._settings = Prefs.SettingsSchema;
+        this._settingsChangedId = this._settings.connect('changed',
+            Lang.bind(this, this._onSettingsChange));
+
+        this._fetchSettings();
+
+    },
+
+
+    _fetchSettings: function () {
+        COUNTRY_NAME           = this._settings.get_string(Prefs.Fields.COUNTRY_NAME);
+    },
+
+
+    _onSettingsChange: function () {
+        var that = this;
+
+        // Load the settings into variables
+        that._fetchSettings();
+        this._queryAPI();
+
+    },
+
+     
+    _get_soup_session: function() {
+        if(_SESSION === null) {
+                _SESSION = new Soup.Session();
+                Soup.Session.prototype.add_feature.call(
+                    _SESSION,
+                    new Soup.ProxyResolverDefault()
+                );
+                _SESSION.user_agent = USER_AGENT;
+                _SESSION.timeout = HTTP_TIMEOUT;
+            }
+        
+        return _SESSION;
+	},
+
+    _queryAPI: function(){
+        let request = Soup.Message.new('GET', 'https://corona.lmao.ninja/countries/'+ COUNTRY_NAME); 
+        this._get_soup_session().send_message (request);
+        let result = JSON.parse(request.response_body.data);
+        this._updateDisplay(result);
+    },
+
+
+    _updateDisplay: function(result){
+        this.menu.removeAll();
+        let section = new PopupMenu.PopupMenuSection("Covid");
+
+        let country = new CoronaItem('empty', 'Country Name', COUNTRY_NAME);
+        let separator0 = new PopupMenu.PopupSeparatorMenuItem();
+
+        country.setMainSensor();
+        section.addMenuItem(country);
+        section.addMenuItem(separator0);
+
+
+        let total_case = new CoronaItem('empty', 'Total Cases', String(result.cases));
+        let new_case = new CoronaItem('go-up-symbolic', 'New Cases', String(result.todayCases));
+        let separator1 = new PopupMenu.PopupSeparatorMenuItem();
+
+        let total_death = new CoronaItem('empty', 'Total Deaths', String(result.deaths));
+        let new_death = new CoronaItem('go-up-symbolic', 'New Deaths', String(result.todayDeaths));
+        let separator2 = new PopupMenu.PopupSeparatorMenuItem();
+
+        let recovered = new CoronaItem('face-smile-big-symbolic', 'Recovered', String(result.recovered));
+        let active = new CoronaItem('empty', 'Active', String(result.active));
+        let critical = new CoronaItem('empty', 'Critical', String(result.critical));
+        let proportion = new CoronaItem('empty', 'Cases / 1M pop', String(result.casesPerOneMillion));
+
+        let separator3 = new PopupMenu.PopupSeparatorMenuItem();
+
+        let settingsMenuItem = new PopupMenu.PopupMenuItem(_('Settings'));
+
+
+        total_case.setMainSensor();
+        section.addMenuItem(total_case);
+
+        new_case.setMainSensor();
+        section.addMenuItem(new_case);
+
+        section.addMenuItem(separator1);
+
+        total_death.setMainSensor();
+        section.addMenuItem(total_death);
+        
+        new_death.setMainSensor();
+        section.addMenuItem(new_death);
+
+        section.addMenuItem(separator2);
+
+        recovered.setMainSensor();
+        section.addMenuItem(recovered);
+        
+        active.setMainSensor();
+        section.addMenuItem(active);
+
+        critical.setMainSensor();
+        section.addMenuItem(critical);
+        
+        proportion.setMainSensor();
+        section.addMenuItem(proportion);
+
+        section.addMenuItem(separator3);
+
+
+        section.addMenuItem(settingsMenuItem);
+        settingsMenuItem.connect('activate', Lang.bind(this, this._openSettings));
+
+        this.menu.addMenuItem(section);
+
+        
+    },
+
+
+    _openSettings: function () {
+        Util.spawn([
+            "gnome-shell-extension-prefs",
+            Me.uuid
+        ]);
+    },
+
+
+});
+
+
+
+let coronaMenu;
 
 function init() {
-    button = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
-                          track_hover: true });
-    let icon = new St.Icon({ icon_name: 'system-run-symbolic',
-                             style_class: 'system-status-icon' });
-
-    button.set_child(icon);
-    button.connect('button-press-event', _showHello);
 }
 
 function enable() {
-    Main.panel._rightBox.insert_child_at_index(button, 0);
+    coronaMenu = new CoronaMenuButton();
+    Main.panel.addToStatusArea('coronaMenu', coronaMenu, 1, 'right');
 }
 
+
 function disable() {
-    Main.panel._rightBox.remove_child(button);
+    coronaMenu.destroy();
+    coronaMenu = null;
 }
