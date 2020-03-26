@@ -147,66 +147,66 @@ const CoronaMenuButton = new Lang.Class({
         this.menu.removeAll();
         let section = new PopupMenu.PopupMenuSection("Covid");
 
-        let country = new CoronaItem('empty', 'Country Name', COUNTRY_NAME);
-        let separator0 = new PopupMenu.PopupSeparatorMenuItem();
+        if(result){
+            let country = new CoronaItem('empty', 'Country Name', COUNTRY_NAME);
+            let separator0 = new PopupMenu.PopupSeparatorMenuItem();
 
-        country.setMainSensor();
-        section.addMenuItem(country);
-        section.addMenuItem(separator0);
+            country.setMainSensor();
+            section.addMenuItem(country);
+            section.addMenuItem(separator0);
+
+            let total_case = new CoronaItem('empty', 'Total Cases', String(result.cases));
+            let new_case = new CoronaItem('go-up-symbolic', 'New Cases', String(result.todayCases));
+            let separator1 = new PopupMenu.PopupSeparatorMenuItem();
+
+            let total_death = new CoronaItem('empty', 'Total Deaths', String(result.deaths));
+            let new_death = new CoronaItem('go-up-symbolic', 'New Deaths', String(result.todayDeaths));
+            let separator2 = new PopupMenu.PopupSeparatorMenuItem();
+
+            let recovered = new CoronaItem('face-smile-big-symbolic', 'Recovered', String(result.recovered));
+            let active = new CoronaItem('empty', 'Active', String(result.active));
+            let critical = new CoronaItem('empty', 'Critical', String(result.critical));
+            let proportion = new CoronaItem('empty', 'Cases / 1M pop', String(result.casesPerOneMillion));
+            let separator3 = new PopupMenu.PopupSeparatorMenuItem();
 
 
-        let total_case = new CoronaItem('empty', 'Total Cases', String(result.cases));
-        let new_case = new CoronaItem('go-up-symbolic', 'New Cases', String(result.todayCases));
-        let separator1 = new PopupMenu.PopupSeparatorMenuItem();
+            total_case.setMainSensor();
+            section.addMenuItem(total_case);
+            new_case.setMainSensor();
+            section.addMenuItem(new_case);
+            section.addMenuItem(separator1);
 
-        let total_death = new CoronaItem('empty', 'Total Deaths', String(result.deaths));
-        let new_death = new CoronaItem('go-up-symbolic', 'New Deaths', String(result.todayDeaths));
-        let separator2 = new PopupMenu.PopupSeparatorMenuItem();
+            total_death.setMainSensor();
+            section.addMenuItem(total_death);
+            new_death.setMainSensor();
+            section.addMenuItem(new_death);
+            section.addMenuItem(separator2);
 
-        let recovered = new CoronaItem('face-smile-big-symbolic', 'Recovered', String(result.recovered));
-        let active = new CoronaItem('empty', 'Active', String(result.active));
-        let critical = new CoronaItem('empty', 'Critical', String(result.critical));
-        let proportion = new CoronaItem('empty', 'Cases / 1M pop', String(result.casesPerOneMillion));
+            recovered.setMainSensor();
+            section.addMenuItem(recovered);
+            active.setMainSensor();
+            section.addMenuItem(active);
+            critical.setMainSensor();
+            section.addMenuItem(critical);
+            proportion.setMainSensor();
+            section.addMenuItem(proportion);
+            section.addMenuItem(separator3);
 
-        let separator3 = new PopupMenu.PopupSeparatorMenuItem();
+           
+        }
+        else {
+            let country = new CoronaItem('empty', 'ERROR', 'No internet connection');
+            let separator0 = new PopupMenu.PopupSeparatorMenuItem();
+
+            country.setMainSensor();
+            section.addMenuItem(country);
+            section.addMenuItem(separator0);
+            
+        }
 
         let settingsMenuItem = new PopupMenu.PopupMenuItem(_('Settings'));
-
-
-        total_case.setMainSensor();
-        section.addMenuItem(total_case);
-
-        new_case.setMainSensor();
-        section.addMenuItem(new_case);
-
-        section.addMenuItem(separator1);
-
-        total_death.setMainSensor();
-        section.addMenuItem(total_death);
-        
-        new_death.setMainSensor();
-        section.addMenuItem(new_death);
-
-        section.addMenuItem(separator2);
-
-        recovered.setMainSensor();
-        section.addMenuItem(recovered);
-        
-        active.setMainSensor();
-        section.addMenuItem(active);
-
-        critical.setMainSensor();
-        section.addMenuItem(critical);
-        
-        proportion.setMainSensor();
-        section.addMenuItem(proportion);
-
-        section.addMenuItem(separator3);
-
-
         section.addMenuItem(settingsMenuItem);
         settingsMenuItem.connect('activate', Lang.bind(this, this._openSettings));
-
         this.menu.addMenuItem(section);
 
         
