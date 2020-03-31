@@ -204,9 +204,14 @@ const CoronaMenuButton = new Lang.Class({
             
         }
 
+        let refreshMenuItem = new PopupMenu.PopupMenuItem(_('Refresh'));
+        section.addMenuItem(refreshMenuItem);
+        refreshMenuItem.connect('activate', Lang.bind(this, this._queryAPI));
+
         let settingsMenuItem = new PopupMenu.PopupMenuItem(_('Settings'));
         section.addMenuItem(settingsMenuItem);
         settingsMenuItem.connect('activate', Lang.bind(this, this._openSettings));
+
         this.menu.addMenuItem(section);
 
         
