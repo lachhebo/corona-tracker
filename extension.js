@@ -74,8 +74,7 @@ const CoronaMenuButton = new Lang.Class({
 
         this._coronaOutput= '';
 
-        this.statusLabel = new St.Label({ text: '\u2026', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
-        this.statusLabel.set_text('Covid-19');
+        this.statusLabel = new St.Icon({style_class: 'virus-icon'})
         this.menu.removeAll();
         this.actor.add_actor(this.statusLabel);
 
