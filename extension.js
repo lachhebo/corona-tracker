@@ -43,8 +43,9 @@ const CoronaItem = new Lang.Class({
         
         this.actor.add(new St.Label({text: label}));
         this.actor.add(new St.Label({text: value}), {align: St.Align.END});
-        this.actor.add(new St.Icon({ icon_name: type, icon_size : 12}));
-       
+        if(type){
+          this.actor.add(new St.Icon({ icon_name: type, icon_size : 12}));
+        }
     },
 
     getPanelString: function() {
@@ -73,8 +74,7 @@ const CoronaMenuButton = new Lang.Class({
 
         this._coronaOutput= '';
 
-        this.statusLabel = new St.Label({ text: '\u2026', y_expand: true, y_align: Clutter.ActorAlign.CENTER });
-        this.statusLabel.set_text('Covid-19');
+        this.statusLabel = new St.Icon({style_class: 'virus-icon'})
         this.menu.removeAll();
         this.actor.add_actor(this.statusLabel);
 
@@ -148,25 +148,25 @@ const CoronaMenuButton = new Lang.Class({
         let section = new PopupMenu.PopupMenuSection("Covid");
 
         if(result){
-            let country = new CoronaItem('empty', 'Country Name', COUNTRY_NAME);
+            let country = new CoronaItem(null, 'Country Name', COUNTRY_NAME);
             let separator0 = new PopupMenu.PopupSeparatorMenuItem();
 
             country.setMainSensor();
             section.addMenuItem(country);
             section.addMenuItem(separator0);
 
-            let total_case = new CoronaItem('empty', 'Total Cases', String(result.cases));
+            let total_case = new CoronaItem(null, 'Total Cases', String(result.cases));
             let new_case = new CoronaItem('go-up-symbolic', 'New Cases', String(result.todayCases));
             let separator1 = new PopupMenu.PopupSeparatorMenuItem();
 
-            let total_death = new CoronaItem('empty', 'Total Deaths', String(result.deaths));
+            let total_death = new CoronaItem(null, 'Total Deaths', String(result.deaths));
             let new_death = new CoronaItem('go-up-symbolic', 'New Deaths', String(result.todayDeaths));
             let separator2 = new PopupMenu.PopupSeparatorMenuItem();
 
             let recovered = new CoronaItem('face-smile-big-symbolic', 'Recovered', String(result.recovered));
-            let active = new CoronaItem('empty', 'Active', String(result.active));
-            let critical = new CoronaItem('empty', 'Critical', String(result.critical));
-            let proportion = new CoronaItem('empty', 'Cases / 1M pop', String(result.casesPerOneMillion));
+            let active = new CoronaItem(null, 'Active', String(result.active));
+            let critical = new CoronaItem(null, 'Critical', String(result.critical));
+            let proportion = new CoronaItem(null, 'Cases / 1M pop', String(result.casesPerOneMillion));
             let separator3 = new PopupMenu.PopupSeparatorMenuItem();
 
 
@@ -204,9 +204,14 @@ const CoronaMenuButton = new Lang.Class({
             
         }
 
+        let refreshMenuItem = new PopupMenu.PopupMenuItem(_('Refresh'));
+        section.addMenuItem(refreshMenuItem);
+        refreshMenuItem.connect('activate', Lang.bind(this, this._queryAPI));
+
         let settingsMenuItem = new PopupMenu.PopupMenuItem(_('Settings'));
         section.addMenuItem(settingsMenuItem);
         settingsMenuItem.connect('activate', Lang.bind(this, this._openSettings));
+
         this.menu.addMenuItem(section);
 
         
