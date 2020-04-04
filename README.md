@@ -10,7 +10,7 @@ A gnome shell extension that notify you every day with information about the cor
 
 ## Usage
 
-You can choose the country for which the data is displayed. 
+In `Icon > Settings` you can choose the country for which the data is displayed. 
 
 ## Author
 
