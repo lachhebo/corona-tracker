@@ -1,5 +1,5 @@
 # corona-tracker
-a gnome shell extension that notify you every day with information about the corona virus spread
+A gnome shell extension that notify you every day with information about the corona virus spread.
 
 
 <img height="350" src="https://raw.githubusercontent.com/lachhebo/corona-tracker/master/resources/covid.png" />
