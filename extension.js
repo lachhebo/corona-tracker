@@ -76,7 +76,7 @@ const CoronaMenuButton = new Lang.Class({
         this._coronaOutput= '';
 
         this._icon = Gio.icon_new_for_string(`${Me.path}/icons/virus-symbolic.svg`);
-        this.panelIcon = new St.Icon({ gicon: this._icon, style_class: 'system-status-icon' });
+        this.panelIcon = new St.Icon({ gicon: this._icon, style_class: 'system-status-icon', icon_size: '16' });
 
         this.menu.removeAll();
         this.actor.add_actor(this.panelIcon);
