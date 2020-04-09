@@ -1,7 +1,7 @@
 {
   "name": "corona-tracker",
   "description": "Get updates on how the virus is spreading worldwide.",
-  "version": 2,
+  "version": 5,
   "uuid": "corona-tracker@lachhebo.github.io",
   "url": "https://github.com/lachhebo/corona-tracker",
   "shell-version": ["3.34", "3.36"]
