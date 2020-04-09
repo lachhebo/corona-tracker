@@ -14,11 +14,9 @@ In `Icon > Settings` you can choose the country for which the data is displayed.
 
 ## Contributors 
 
-[Ismaël Lachheb](https://github.com/lachhebo)
-
-[Jonathan Snyder](https://github.com/jpsnyder)
-
-[Tamas-Toth-ebola](https://github.com/Tamas-Toth-ebola)
+- [Ismaël Lachheb](https://github.com/lachhebo)
+- [Jonathan Snyder](https://github.com/jpsnyder)
+- [Tamas-Toth-ebola](https://github.com/Tamas-Toth-ebola)
 
 
 ## Credits
