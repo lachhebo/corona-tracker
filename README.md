@@ -12,6 +12,10 @@ A gnome shell extension that notify you every day with information about the cor
 
 In `Icon > Settings` you can choose the country for which the data is displayed. 
 
+## Installation
+
+...TBD...
+
 ## Contributors 
 
 - [Ismaël Lachheb](https://github.com/lachhebo)
