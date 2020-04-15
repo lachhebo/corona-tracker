@@ -176,7 +176,7 @@ const CoronaMenuButton = new Lang.Class({
             let active = new CoronaItem('face-plain-symbolic', 'Active:', String(result.active));
             let critical = new CoronaItem('face-sad-symbolic', 'Critical:', String(result.critical));
             let proportion = new CoronaItem(null, 'Cases / 1M pop:', String(result.casesPerOneMillion));
-            let death_proportion = new CoronaItem(null, 'Cases / 1M pop:', String(result.deathsPerOneMillion));
+            let death_proportion = new CoronaItem(null, 'Deaths / 1M pop:', String(result.deathsPerOneMillion));
             let separator3 = new PopupMenu.PopupSeparatorMenuItem();
 
 
