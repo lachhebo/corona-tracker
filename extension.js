@@ -21,7 +21,7 @@ const Prefs = Me.imports.prefs;
 
 let metadata = Me.metadata;
 let _SESSION = null;
-let COUNTRY_NAME = 'france'
+let COUNTRY_NAME = 'World'
 
 const USER_AGENT = 'GNOME Shell - COVID-19 Indicator (Extension)';
 const HTTP_TIMEOUT = 10;
@@ -139,7 +139,13 @@ const CoronaMenuButton = new Lang.Class({
 	},
 
     _queryAPI: function(){
-        let request = Soup.Message.new('GET', 'https://corona.lmao.ninja/countries/'+ COUNTRY_NAME); 
+        let request;
+        if(COUNTRY_NAME === 'World'){
+            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/all');
+        }
+        else{
+            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/countries/'+ COUNTRY_NAME); 
+        }
         this._get_soup_session().send_message (request);
         let result = JSON.parse(request.response_body.data);
         this._updateDisplay(result);

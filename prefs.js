@@ -201,6 +201,7 @@ const App = new Lang.Class({
         item.append("Uzbekistan", "Uzbekistan");
         item.append("Venezuela", "Venezuela");
         item.append("Vietnam", "Vietnam");
+        item.append("World", "World");
         item.append("Zambia", "Zambia");
         item.append("Zimbabwe", "Zimbabwe");
 
