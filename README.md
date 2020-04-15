@@ -28,6 +28,6 @@ In `Icon > Settings` you can choose the country for which the data is displayed.
 
 ## Support
 
-If you like this extension, you can show your appreciaion by starring the repo or by making a donation ;)
+If you like this extension, you can show your appreciation by starring the repo or by making a donation ;)
 
 [<img height="30" src="https://raw.githubusercontent.com/lachhebo/GabTag/screenshots/donate.png" alt="PayPal"/>](https://www.paypal.me/lachhebo)
