@@ -4,5 +4,5 @@
   "version": 5,
   "uuid": "corona-tracker@lachhebo.github.io",
   "url": "https://github.com/lachhebo/corona-tracker",
-  "shell-version": ["3.34", "3.36"]
+  "shell-version": ["3.30", "3.32", "3.34", "3.36"]
 }

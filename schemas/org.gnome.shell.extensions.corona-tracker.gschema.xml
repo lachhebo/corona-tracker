@@ -161,14 +161,15 @@
     <value nick="Grenada" value="165"/>
     <value nick="Libya" value="166"/>
     <value nick="Montserrat" value="167"/>
-    <value nick="Somalia" value="168"/>    
+    <value nick="Somalia" value="168"/> 
+    <value nick="World" value="169"/>   
   </enum>
 
 
   <schema id="org.gnome.shell.extensions.corona-tracker" path="/org/gnome/shell/extensions/corona-tracker/">
 
     <key name="country-name" enum='org.gnome.shell.extensions.corona-tracker.country'>
-        <default>"France"</default>
+        <default>"World"</default>
         <summary>What to display in top bar</summary>
     </key>
 

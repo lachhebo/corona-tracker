@@ -21,7 +21,7 @@ const Prefs = Me.imports.prefs;
 
 let metadata = Me.metadata;
 let _SESSION = null;
-let COUNTRY_NAME = 'france'
+let COUNTRY_NAME = 'World'
 
 const USER_AGENT = 'GNOME Shell - COVID-19 Indicator (Extension)';
 const HTTP_TIMEOUT = 10;
@@ -139,7 +139,13 @@ const CoronaMenuButton = new Lang.Class({
 	},
 
     _queryAPI: function(){
-        let request = Soup.Message.new('GET', 'https://corona.lmao.ninja/countries/'+ COUNTRY_NAME); 
+        let request;
+        if(COUNTRY_NAME === 'World'){
+            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/all');
+        }
+        else{
+            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/countries/'+ COUNTRY_NAME); 
+        }
         this._get_soup_session().send_message (request);
         let result = JSON.parse(request.response_body.data);
         this._updateDisplay(result);
@@ -170,6 +176,7 @@ const CoronaMenuButton = new Lang.Class({
             let active = new CoronaItem('face-plain-symbolic', 'Active:', String(result.active));
             let critical = new CoronaItem('face-sad-symbolic', 'Critical:', String(result.critical));
             let proportion = new CoronaItem(null, 'Cases / 1M pop:', String(result.casesPerOneMillion));
+            let death_proportion = new CoronaItem(null, 'Deaths / 1M pop:', String(result.deathsPerOneMillion));
             let separator3 = new PopupMenu.PopupSeparatorMenuItem();
 
 
@@ -183,6 +190,8 @@ const CoronaMenuButton = new Lang.Class({
 
             total_death.setMainSensor();
             section.addMenuItem(total_death);
+            death_proportion.setMainSensor();
+            section.addMenuItem(death_proportion);
             new_death.setMainSensor();
             section.addMenuItem(new_death);
             section.addMenuItem(separator2);
