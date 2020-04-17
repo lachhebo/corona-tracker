@@ -141,10 +141,10 @@ const CoronaMenuButton = new Lang.Class({
     _queryAPI: function(){
         let request;
         if(COUNTRY_NAME === 'World'){
-            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/all');
+            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/v2/all');
         }
         else{
-            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/countries/'+ COUNTRY_NAME); 
+            request = Soup.Message.new('GET', 'https://corona.lmao.ninja/v2/countries/'+ COUNTRY_NAME); 
         }
         this._get_soup_session().send_message (request);
         let result = JSON.parse(request.response_body.data);
