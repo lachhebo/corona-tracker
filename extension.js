@@ -154,7 +154,7 @@ const CoronaMenuButton = new Lang.Class({
 
     _updateDisplay: function(result){
         this.menu.removeAll();
-        let section = new PopupMenu.PopupMenuSection("Covid");
+        let section = new PopupMenu.PopupMenuSection("COVID");
 
         if(result){
             let country = new CoronaItem(null, 'Country:', COUNTRY_NAME);
