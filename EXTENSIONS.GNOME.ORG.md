@@ -1,5 +1,7 @@
 # corona-tracker
 
+This file contains in one place all the required data of the GNOME Shell extension for extensions.gnome.org website to make perfect control of them and keep it in every aspect the up-to-date extraction of main README document.
+
 ## Homepage
 
 https://github.com/lachhebo/corona-tracker
