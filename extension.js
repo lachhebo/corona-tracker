@@ -164,19 +164,19 @@ const CoronaMenuButton = new Lang.Class({
             section.addMenuItem(country);
             section.addMenuItem(separator0);
 
-            let total_case = new CoronaItem(null, 'Total Cases:', String(result.cases));
-            let new_case = new CoronaItem('go-up-symbolic', 'New Cases:', String(result.todayCases));
+            let total_case = new CoronaItem(null, 'Total Cases:', result.cases.toLocaleString());
+            let new_case = new CoronaItem('go-up-symbolic', 'New Cases:', result.todayCases.toLocaleString());
             let separator1 = new PopupMenu.PopupSeparatorMenuItem();
 
-            let total_death = new CoronaItem('face-crying-symbolic', 'Total Deaths:', String(result.deaths));
-            let new_death = new CoronaItem('go-up-symbolic', 'New Deaths:', String(result.todayDeaths));
+            let total_death = new CoronaItem('face-crying-symbolic', 'Total Deaths:', result.deaths.toLocaleString());
+            let new_death = new CoronaItem('go-up-symbolic', 'New Deaths:', result.todayDeaths.toLocaleString());
             let separator2 = new PopupMenu.PopupSeparatorMenuItem();
 
-            let recovered = new CoronaItem('face-smile-big-symbolic', 'Recovered:', String(result.recovered));
-            let active = new CoronaItem('face-plain-symbolic', 'Active:', String(result.active));
-            let critical = new CoronaItem('face-sad-symbolic', 'Critical:', String(result.critical));
-            let proportion = new CoronaItem(null, 'Cases / 1M pop:', String(result.casesPerOneMillion));
-            let death_proportion = new CoronaItem(null, 'Deaths / 1M pop:', String(result.deathsPerOneMillion));
+            let recovered = new CoronaItem('face-smile-big-symbolic', 'Recovered:', result.recovered.toLocaleString());
+            let active = new CoronaItem('face-plain-symbolic', 'Active:', result.active.toLocaleString());
+            let critical = new CoronaItem('face-sad-symbolic', 'Critical:', result.critical.toLocaleString());
+            let proportion = new CoronaItem(null, 'Cases / 1M pop:', result.casesPerOneMillion.toLocaleString());
+            let death_proportion = new CoronaItem(null, 'Deaths / 1M pop:', result.deathsPerOneMillion.toLocaleString());
             let separator3 = new PopupMenu.PopupSeparatorMenuItem();
 
 
