@@ -37,7 +37,8 @@ GNU - General Public License v3+: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ----- MORE DETAILS -----
 
-https://github.com/lachhebo/corona-tracker/blob/master/README.md
+GENERAL INFO: https://github.com/lachhebo/corona-tracker
+RELEASE NOTES: https://github.com/lachhebo/corona-tracker/releases
 ```
 
 ---
