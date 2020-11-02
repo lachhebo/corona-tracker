@@ -1,9 +1,9 @@
 // Imports
+
 const St = imports.gi.St;
 const Gio = imports.gi.Gio; // Just for custom icon
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-
+const Tweener = imports.tweener.tweener;
 
 const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
@@ -29,7 +29,6 @@ const LOOP_UPDATE_TIME = 60*60*12; // every 12 hour, the result will be updated
 
 // Functions
 
-
 const CoronaItem = new Lang.Class({
     Name: 'CoronaItem',
     Extends: PopupMenu.PopupBaseMenuItem,
@@ -38,12 +37,11 @@ const CoronaItem = new Lang.Class({
         this.parent();
         this.connect('activate', function () {
         });
-        this._label = label;
-        this._value = value;
+        this._label = new St.Label({text: label}); // Restructured as StBoxLayout's child meta was deprecated in 3.36 and removed in 3.38.
+        this._value = new St.Label({text: value}, {x_align: St.Align.END}); // Restructured as StBoxLayout's child meta was deprecated in 3.36 and removed in 3.38.
 
-        
-        this.actor.add(new St.Label({text: label}));
-        this.actor.add(new St.Label({text: value}), {align: St.Align.END});
+        this.actor.add(this._label); // Restructured as StBoxLayout's child meta was deprecated in 3.36 and removed in 3.38.
+        this.actor.add(this._value); // Restructured as StBoxLayout's child meta was deprecated in 3.36 and removed in 3.38.
         if(type){
           this.actor.add(new St.Icon({ icon_name: type, icon_size : 12})); // COVID-19 panel icons
         }
@@ -61,9 +59,6 @@ const CoronaItem = new Lang.Class({
         return this._label;
     },
 });
-
-
-
 
 const CoronaMenuButton = new Lang.Class({
     Name: 'CoronaMenuButton',
@@ -108,11 +103,9 @@ const CoronaMenuButton = new Lang.Class({
 
     },
 
-
     _fetchSettings: function () {
         COUNTRY_NAME           = this._settings.get_string(Prefs.Fields.COUNTRY_NAME);
     },
-
 
     _onSettingsChange: function () {
         var that = this;
@@ -123,7 +116,6 @@ const CoronaMenuButton = new Lang.Class({
 
     },
 
-     
     _get_soup_session: function() {
         if(_SESSION === null) {
                 _SESSION = new Soup.Session();
@@ -136,7 +128,7 @@ const CoronaMenuButton = new Lang.Class({
             }
         
         return _SESSION;
-	},
+    },
 
     _queryAPI: function(){
         let request;
@@ -150,7 +142,6 @@ const CoronaMenuButton = new Lang.Class({
         let result = JSON.parse(request.response_body.data);
         this._updateDisplay(result);
     },
-
 
     _updateDisplay: function(result){
         this.menu.removeAll();
@@ -178,7 +169,6 @@ const CoronaMenuButton = new Lang.Class({
             let proportion = new CoronaItem(null, 'Cases / 1M pop:', result.casesPerOneMillion.toLocaleString());
             let death_proportion = new CoronaItem(null, 'Deaths / 1M pop:', result.deathsPerOneMillion.toLocaleString());
             let separator3 = new PopupMenu.PopupSeparatorMenuItem();
-
 
             total_case.setMainSensor();
             section.addMenuItem(total_case);
@@ -229,7 +219,6 @@ const CoronaMenuButton = new Lang.Class({
         
     },
 
-
     _openSettings: function () {
         Util.spawn([
             "gnome-shell-extension-prefs",
@@ -237,10 +226,7 @@ const CoronaMenuButton = new Lang.Class({
         ]);
     },
 
-
 });
-
-
 
 let coronaMenu;
 
@@ -251,7 +237,6 @@ function enable() {
     coronaMenu = new CoronaMenuButton();
     Main.panel.addToStatusArea('coronaMenu', coronaMenu, 1, 'right');
 }
-
 
 function disable() {
     coronaMenu.destroy();
