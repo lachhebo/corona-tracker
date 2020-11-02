@@ -42,4 +42,4 @@ RELEASE NOTES: https://github.com/lachhebo/corona-tracker/releases
 ```
 
 ---
-[^1]: HighRes official GNOME Shell extension like puzzle in GNOME HIG color palette '**Green 5**' color *(#3d3846)* with the extension's GNOME Panel icon in GNOME HIG color palette '**Dark 3**' color *(#3d3846)* rendered in 256x256px with 16px margin.
+[^1]: HighRes official GNOME Shell extension like puzzle in GNOME HIG color palette '**Green 5**' color *(#3d3846)* with the extension's GNOME Panel icon in GNOME HIG color palette '**Light 3**' color *(#deddda)* rendered in 256x256px with 16px margin.
