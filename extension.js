@@ -3,14 +3,12 @@
 const St = imports.gi.St;
 const Gio = imports.gi.Gio; // Just for custom icon
 const Main = imports.ui.main;
-const Tweener = imports.tweener.tweener;
 
 const Lang = imports.lang;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
 const Mainloop = imports.mainloop;
-const Clutter = imports.gi.Clutter;
 const Soup = imports.gi.Soup;
 
 const ExtensionUtils = imports.misc.extensionUtils;
