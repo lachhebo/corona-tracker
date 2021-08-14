@@ -1,8 +1,6 @@
 # corona-tracker
 
-A GNOME Shell extension *(GNOME Panel applet)* to notify you every day with information about the COVID-19 virus spread.
-
-**Please stay at home, save lives.**
+A GNOME Shell extension *(GNOME Panel applet)* to keep you updated with information about the COVID-19 virus spread.
 
 ## Screenshot
 
